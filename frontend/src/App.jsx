@@ -7,7 +7,7 @@ import Feature from './Pages/Feature';
 function App() {
   return (
     <div className='w-screen'>
-        <div className='z-50 bg-transparent sticky top-0 '><Nav></Nav></div>
+        <div className='sticky top-0 z-50'><Nav></Nav></div>
         <div>
         <Hero/>
         <Feature/>
