@@ -1,10 +1,10 @@
 import React from 'react';
 import Nav from './Components/Nav';
 import VideoBackground from './Components/VideoBg';
-import Hero from './Pages/Hero';
-import Feature from './Pages/Feature';
-import Bento from './Pages/Bento';
-import CallToAction from './Pages/CallToAction';
+import Hero from './Pages/Landing/Hero';
+import Feature from './Pages/Landing/Feature';
+import Bento from './Pages/Landing/Bento';
+import CallToAction from './Pages/Landing/CallToAction';
 function App() {
   return (
     <div className='w-screen bg-black'>
