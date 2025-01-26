@@ -1,6 +1,13 @@
 # Career Shepherds: Your Personalized AI counsellor
 
-
+### To run the project locally run the following commands in the root directory
+```[bash]
+cd frontend
+npm run dev
+cd ..
+cd /server/express
+npm run dev
+```
 ## Techstack and System Design
 ![Flow Chart Whiteboard in Red Blue Basic Style](https://github.com/user-attachments/assets/5812d4d1-392a-4865-aca6-0d0dcb998c0b)
 
