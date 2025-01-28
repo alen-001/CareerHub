@@ -1,6 +1,7 @@
 import { Button } from "../../components/ui/button";
 import BoxReveal from "../../components/ui/box-reveal";
 import { InteractiveHoverButton } from '../../components/ui/interactive-hover-button';
+import { Link } from "react-router-dom";
 import RetroGrid from "../../components/ui/retro-grid";
 export default function CallToAction() {
   return (
@@ -19,7 +20,9 @@ export default function CallToAction() {
       </BoxReveal>
 
       <BoxReveal boxColor={"#f87171"} duration={0.5}>
-        <InteractiveHoverButton className="mt-[1.6rem] z-10 text-black"></InteractiveHoverButton>
+        <Link to='/login'>
+        <InteractiveHoverButton front="Get Started" back="Now!" className="mt-[1.6rem] z-10 text-black "></InteractiveHoverButton>
+        </Link>
       </BoxReveal>
       <RetroGrid  className=" -z-0 overflow-clip" ></RetroGrid>
     </div>

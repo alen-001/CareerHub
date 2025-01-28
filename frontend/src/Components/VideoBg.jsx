@@ -1,9 +1,9 @@
 import React from 'react';
 import vid from '../assets/bg1.mp4';
-
-const VideoBackground = ({ children }) => {
+import { cn } from '@/lib/utils';
+const VideoBackground = ({ children,className }) => {
   return (
-    <div className="relative w-screen h-screen bg-black overflow-hidden">
+    <div className={cn("relative w-screen h-screen bg-black overflow-hidden",className)}>
       <video 
         src={vid}
         autoPlay 
