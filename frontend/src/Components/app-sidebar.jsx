@@ -18,12 +18,17 @@ import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
+  useSidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
 
+} from "@/components/ui/sidebar"
+import logo from '@/assets/logo.svg'
 // This is sample data.
 const data = {
   user: {
@@ -36,17 +41,7 @@ const data = {
       name: "Acme Inc",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
+    }
   ],
   navMain: [
     {
@@ -54,20 +49,7 @@ const data = {
       url: "#",
       icon: SquareTerminal,
       isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
+      items:[],
     },
     {
       title: "Models",
@@ -157,10 +139,24 @@ const data = {
 export function AppSidebar({
   ...props
 }) {
+  const {toggleSidebar} = useSidebar();
   return (
-    (<Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+    (<Sidebar collapsible="icon" {...props} className='bg-black' onMouseEnter={toggleSidebar} onMouseLeave={toggleSidebar}>
+      <SidebarHeader >
+        <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton size="lg" asChild >
+                <a href="/app">
+                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-transparent text-sidebar-primary-foreground">
+                    <img src={logo} alt="CareerShepherds" className="w-10 h-10" />
+                  </div>
+                  <div className="flex flex-col gap-0.5 leading-none">
+                    <span className="">CareerShepherds</span>
+                  </div>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

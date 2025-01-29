@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority";
@@ -182,7 +181,9 @@ const Sidebar = React.forwardRef((
       data-state={state}
       data-collapsible={state === "collapsed" ? collapsible : ""}
       data-variant={variant}
-      data-side={side}>
+      data-side={side}
+      
+      >
       {/* This is what handles the sidebar gap on desktop */}
       <div
         className={cn(
