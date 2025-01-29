@@ -5,8 +5,8 @@ import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button
 function Onboarding() {
   const name = "Alen";
   const tabs = [
-    { no: 0, content: `Welcome ${name}!` },
-    { no: 1, content: `Let's build your Profile` },
+    { no: 0, html: <div className="text-left">Hi {name},<br/>Welcome!</div> },
+    { no: 1, html: <div className="text-center">Let's build your Profile</div> },
   ];
   const [tab, setTab] = useState(tabs[0]);
   const [isExiting, setIsExiting] = useState(false); // New state for exit animation
@@ -25,11 +25,11 @@ function Onboarding() {
     setIsExiting(true); // Trigger exit animation
     setTimeout(() => {
       window.location.href = "/onboarding/upload"; // Navigate after animation
-    }, 2100); // Timeout matches the exit animation duration
+    }, 1500); // Timeout matches the exit animation duration
   };
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
+    <div className="w-screen h-screen flex items-center  justify-center">
       <AnimatePresence mode="wait">
         {!isExiting && (
           <motion.div
@@ -40,7 +40,7 @@ function Onboarding() {
               duration: 1,
               scale: { type: "spring", visualDuration: 0.8, bounce: 0.2 },
             }}
-            className="bg-[#c83b70] h-3/4 w-3/4 rounded-3xl flex items-center justify-center text-center relative"
+            className="bg-[#c83b70] h-3/4 w-3/4 rounded-3xl flex items-center justify-center  relative"
           >
             <motion.div
               key={tab.no}
@@ -50,7 +50,7 @@ function Onboarding() {
               transition={{ duration: 2 }}
               className="text-white text-9xl font-semibold"
             >
-              {tab.content}
+              {tab.html}
             </motion.div>
             {tab.no === 1 ? (
               <div

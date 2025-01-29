@@ -127,7 +127,6 @@ export const Cover = ({
         )}>
         {children}
       </motion.span>
-
     </div>)
   );
 };

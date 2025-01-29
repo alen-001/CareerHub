@@ -1,4 +1,5 @@
-import {RocketIcon,} from "@radix-ui/react-icons";
+import React, { memo } from "react";
+import { RocketIcon, } from "@radix-ui/react-icons";
 import { BotMessageSquare,ScanText, SquareUserRound,LibraryBig} from 'lucide-react';
 import { BentoCard, BentoGrid } from "../../components/ui/bento-grid";
   
@@ -50,7 +51,7 @@ const features = [
     },
 ];
 
-export default function Bento() {
+const MemoizedBento = memo(function Bento() {
   return (
   <section class="relative bg-black flex flex-col items-center justify-center w-full h-4/5 p-20 ">
       <div className="text-9xl font-bold text-white m-5" >What do we offer</div>
@@ -61,5 +62,7 @@ export default function Bento() {
     </BentoGrid>
   </section>
   );
-}
+});
+
+export default MemoizedBento;
   

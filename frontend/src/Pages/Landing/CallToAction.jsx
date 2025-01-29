@@ -1,9 +1,12 @@
 import { Button } from "../../components/ui/button";
 import BoxReveal from "../../components/ui/box-reveal";
+import { memo } from "react";
 import { InteractiveHoverButton } from '../../components/ui/interactive-hover-button';
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 import RetroGrid from "../../components/ui/retro-grid";
-export default function CallToAction() {
+import React from "react";
+
+const CallToAction = React.memo(function CallToAction() {
   return (
     <div className=" relative bg-black text-white w-full h-screen flex flex-col items-center justify-start overflow-hidden p-20">
       
@@ -27,4 +30,6 @@ export default function CallToAction() {
       <RetroGrid  className=" -z-0 overflow-clip" ></RetroGrid>
     </div>
   );
-}
+});
+
+export default CallToAction;

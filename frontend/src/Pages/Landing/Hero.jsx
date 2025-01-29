@@ -1,5 +1,5 @@
 import React from 'react';
-import Nav from '@/components/Nav';
+import Nav from '@/components/LandingNav';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import job from '@/assets/job.svg'
