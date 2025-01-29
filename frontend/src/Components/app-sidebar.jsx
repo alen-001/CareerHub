@@ -45,15 +45,8 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items:[],
-    },
-    {
       title: "Models",
-      url: "#",
+      url: "/app/chat",
       icon: Bot,
       items: [
         {
@@ -69,88 +62,24 @@ const data = {
           url: "#",
         },
       ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
+    }],
 }
 
 export function AppSidebar({
   ...props
 }) {
-  const {toggleSidebar} = useSidebar();
+  const {toggleSidebar,setOpen} = useSidebar();
   return (
-    (<Sidebar collapsible="icon" {...props} className='bg-black' onMouseEnter={toggleSidebar} onMouseLeave={toggleSidebar}>
-      <SidebarHeader >
+    (<Sidebar collapsible="icon" {...props} className='bg-black' onClick={toggleSidebar} >
+      <SidebarHeader className='bg-black'>
         <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" asChild >
                 <a href="/app">
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-transparent text-sidebar-primary-foreground">
+                  <div className="flex aspect-square size-8  items-center justify-center rounded-lg  text-sidebar-primary-foreground">
                     <img src={logo} alt="CareerShepherds" className="w-10 h-10" />
                   </div>
-                  <div className="flex flex-col gap-0.5 leading-none">
+                  <div className="flex flex-col gap-0.5  leading-none">
                     <span className="">CareerShepherds</span>
                   </div>
                 </a>
@@ -158,12 +87,11 @@ export function AppSidebar({
             </SidebarMenuItem>
           </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className='bg-black'>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
+      <SidebarFooter onMouseEnter={{}} onMouseLeave={{}} className='bg-black'>
+        <NavUser user={data.user}/>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>)
