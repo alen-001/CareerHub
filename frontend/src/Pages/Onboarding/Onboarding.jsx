@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
-
+import { useLocation } from "react-router-dom";
+import { useUser } from "@/context/userContext";
 function Onboarding() {
-  const name = "Alen";
+  const { userData} = useUser();
+  const name= userData?.firstName;
   const tabs = [
     { no: 0, html: <div className="text-left">Hi {name},<br/>Welcome!</div> },
     { no: 1, html: <div className="text-center">Let's build your Profile</div> },

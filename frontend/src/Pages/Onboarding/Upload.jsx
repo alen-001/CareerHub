@@ -4,18 +4,54 @@ import { Heading, ScanText,SquarePen,PencilLine } from 'lucide-react'
 import React,{useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-
+import { useMutation } from '@tanstack/react-query'
+import axios from 'axios'
+import toast from 'react-hot-toast'
+import { useUser } from '@/context/userContext'
 function Upload() {
-    const navigate=useNavigate();
-    const [isLoading, setisLoading] =useState(false);
-    function handleFileUpload(file){
-        setisLoading(true);
-        setTimeout(()=>{
-            console.log('file uploaded');
-            console.log(file);
-            setisLoading(false);
-            navigate('/onboarding/profile')
-        },4000);
+    const navigate = useNavigate();
+    const [file, setFile] = useState(null);
+    const {userData, setUserData} = useUser();
+    const {mutate,isError,error,isPending} = useMutation({
+        mutationFn:async (selectedFile) => {
+            const formData = new FormData();
+            formData.append('filename', "resume");
+            formData.append('pdf_file', selectedFile);
+
+            const response1 = await axios.post('/api/resume/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            // if(!response1.ok){
+            //     throw new Error(response1.data.error || "Failed to upload file");
+            // }
+            const response2 = await axios.get('/api/resume/parse');
+            // if(!response2.ok){
+            //     throw new Error(response2.data.error || "Failed to parse file");
+            // }
+            const data=await response2.data;
+            const workExperience=data.workExperience;
+            const educationDetails=data.educationDetails;
+            const skills=data.skills;
+            const desiredSkills=data.desiredSkills;
+            const projects=data.projects;
+            setUserData({workExperience,educationDetails,skills,desiredSkills,projects});
+            return {res1:response1.data, res2:response2.data};
+        },
+            onSuccess: (data) => {
+                console.log('File uploaded and parsed successfully:', data);
+                toast.success('uploaded successfully');
+                navigate('/onboarding/profile');
+                 // Redirect after success
+            },
+            onError: (error) => {
+                console.error('Upload failed:', error);
+                toast.error(`Upload failed ${error.message}`);
+            }
+        });
+
+    function handleFileUpload(file) {
+        setFile(file);
+        mutate(file);
     }
     return (
     <div className='bg-black w-screen h-screen flex flex-col items-center justify-center'>
@@ -37,6 +73,7 @@ function Upload() {
                 type="file"
                 style={{ display: 'none' }}
                 id="file-upload"
+                name='pdf_file'
                 onChange={(e) =>{if(e.target.files[0]) {
                     handleFileUpload(e.target.files[0])
                   }}}
@@ -59,7 +96,7 @@ function Upload() {
             </Card>
             </Link>
         </div>
-        {isLoading?<div className='text-white'>File is being uploaded please wait..</div>:null}
+        {isPending?<div className='text-white'>File is being uploaded please wait..</div>:null}
         </Card>
         </motion.div>
         </div>

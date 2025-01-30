@@ -1,5 +1,7 @@
-"use client"
-import { useState } from "react"
+
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { toast } from "react-hot-toast"
 import { Button } from "@/components/ui/button"
 import ProgressBar from "@/components/profile_components/ProgressBar"
 import { BasicInfo } from "@/components/profile_components/Basicinfo"
@@ -7,6 +9,10 @@ import { EducationAndSkills } from "@/components/profile_components/EducationAnd
 import { WorkExperienceAndProjects } from "@/components/profile_components/WorkExperienceAndProjects"
 import { FormNavigation } from "@/components/profile_components/FormNavigation"
 import { Card } from "@/components/ui/card"
+import { useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
+import { useUser } from "@/context/userContext"
+import { useMutation,useQuery } from "@tanstack/react-query"
 const formSteps = [
   { title: "Basic Information", component: BasicInfo },
   { title: "Education and Skills", component: EducationAndSkills },
@@ -19,30 +25,45 @@ const formSteps = [
 export default function ProfileBuilder() {
   const [currentStep, setCurrentStep] = useState(0)
   const [errors, setErrors] = useState({});
+  const navigate=useNavigate();
+  const {userData, setUserData} = useUser();
+  const location = useLocation();
+  const data=location.state;
   const [profile, setProfile] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    username: "",
+    firstName: userData?.firstName || "",
+    lastName: userData?.lastName || "",
+    email: userData?.email || "",
+    username: userData?.username || "",
     phoneNumber: "",
-    resume: "",
     socialLinks: { linkedIn: "", gitHub: "" },
-    workExperience: [
-      {
-        jobTitle: "",
-        company: "",
+    workExperience: userData?.workExperience.map(
+      exp => ({
+        jobTitle: exp.jobTitle,
+        company: exp.company,
         startYear: "",
         endYear: "",
-        responsibilities: ""
+        responsibilities: exp.responsibilities
+      })
+    ) || [
+      {
+      jobTitle: "",
+      company: "",
+      startYear: "",
+      endYear: "",
+      responsibilities: ""
       }
     ],
-    educationDetails: [
+    educationDetails: userData?.educationDetails || [
       { schoolName: "", degree: "", startYear: "", endYear: "", major: "" }
     ],
-    skills: [],
-    desiredSkills: [],
-    projects: [{ name: "", description: "", technologiesUsed: [] }]
-  })
+    skills: userData?.skills.map(skill => ({ id: skill, label: skill })) || [],
+    desiredSkills: userData?.desiredSkills.map(skill => ({ id: skill, label: skill })) || [],
+    projects: userData?.projects.map(project =>({
+      name: project.name,
+      description: project.description,
+      technologiesUsed: project.technologiesUsed.map(technology => ({ id: technology, label: technology }))
+    })) || [{ name: "", description: "", technologiesUsed: [] }]
+    })
 
   const handleChange = (e, field, index, subfield) => {
     if (index !== undefined && subfield) {
@@ -105,68 +126,82 @@ export default function ProfileBuilder() {
       [field]: prev[field].filter((_, i) => i !== index)
     }))
   }
-
-  const handleSubmit = e => {
-    e.preventDefault()
-    const formData = new FormData();
-    const newErrors={};
-    if(!profile.firstName){
-        newErrors.firstName="First Name is required";
-        setCurrentStep(0);
-    };
-    if(!profile.email){
-        newErrors.email="Email is required"
-        setCurrentStep(0);
-    };
-    if(!profile.username){
-        newErrors.username="Username is required"
-        setCurrentStep(0);
-    };
-    if(Object.keys(newErrors).length>0){
-        setErrors(newErrors);
-        return;
+  const { data: da, isLoading, error :er} = useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => {
+      const response = await axios.get("/api/auth/me"); // Replace with your API endpoint
+      return response.data;
     }
-    const skills=profile.skills.map(
-        (skill) => {
-            return skill.label;
-        }
-    )
-    const desiredSkills=profile.desiredSkills.map(
-        (skill) => {
-            return skill.label;
-        }
-    )
-    const projects=profile.projects.map(
-        (project) => {
-            return {
-                name: project.name,
-                description: project.description,
-                technologiesUsed: project.technologiesUsed.map(
-                    (technology) => {
-                        return technology.label;
-                    }
-                )
+  });
+  useEffect(()=>{
+    if(da){
+      setProfile(prev => ({
+        ...prev,
+        firstName: da.firstName,
+        lastName: da.lastName,
+        email: da.email,
+        username: da.username,
+      }));
+    }
+  },[da]);
+  const{mutate,isError,isPending,error}=useMutation({
+    mutationFn:async({firstName,lastName,email,username,phoneNumber,socialLinks,workExperience,educationDetails,skills,desiredSkills,projects})=>{
+        // if(!firstName){
+        //   setCurrentStep(0);
+        //   throw new Error("First Name is required");
+        // };
+        // if(!email){
+        //   setCurrentStep(0);
+        //   throw new Error("Email is required");
+        // };
+        // if(!username){
+        //   setCurrentStep(0);
+        //   throw new Error("Username is required");
+        // };
+        skills=skills.map(
+            (skill) => {
+                return skill.label;
             }
-        }
-    )
-    Object.entries(profile).forEach(([key, value]) => {
-        if (key === "skills") {
-            formData.append(key, JSON.stringify(skills));
-        } else if (key === "desiredSkills") {
-            formData.append(key, JSON.stringify(desiredSkills));
-        } else if (key === "projects") {
-            formData.append(key, JSON.stringify(projects));
-        } else if (typeof value === "object") {
-            formData.append(key, JSON.stringify(value));
-        } else {
-            formData.append(key, value);
-        }
-    });
-
-    for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-    }
-    // Here you would typically send the data to your backend
+        )
+        desiredSkills=desiredSkills.map(
+            (skill) => {
+                return skill.label;
+            }
+        )
+        projects=projects.map(
+            (project) => {
+                return {
+                    name: project.name,
+                    description: project.description,
+                    technologiesUsed: project.technologiesUsed.map(
+                        (technology) => {
+                            return technology.label;
+                        }
+                    )
+                }
+            }
+        )
+        console.log({firstName,lastName,email,username,phoneNumber,socialLinks,workExperience,educationDetails,skills,desiredSkills,projects});
+        const res=await axios.put('/api/user/update',{firstName,lastName,email,username,phoneNumber,socialLinks,workExperience,educationDetails,skills,desiredSkills,projects},
+        {
+            headers:{
+                'Content-Type':'application/json'
+            }
+        });
+      },
+      onSuccess:()=>{
+        toast.success("Profile built successfully");
+        navigate('/app');
+      },
+      onError:(error)=>{
+        toast.error(error.message);
+      }
+        
+});
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log(profile);
+    mutate(profile);
   }
 
   const calculateCompletionPercentage = () => {
@@ -199,7 +234,7 @@ export default function ProfileBuilder() {
 
   return (
     <div className="bg-black w-screen h-screen flex flex-col items-center justify-center">
-    <Card className=' w-2/3 h-10/12 overflow-scroll m-10 p-10'>
+    <Card className=' w-2/3 h-10/12 overflow-y-auto no-scrollbar m-10 p-10'>
       <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold mb-6">
             {formSteps[currentStep].title}

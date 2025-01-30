@@ -1,4 +1,4 @@
-"use client"
+
 import { useState, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { Cross2Icon, CheckIcon, PlusIcon } from "@radix-ui/react-icons"

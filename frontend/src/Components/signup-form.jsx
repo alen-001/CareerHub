@@ -6,11 +6,14 @@ import { Label } from "@/components/ui/label"
 import logo from "../assets/logo.svg"
 import {useState} from 'react'
 import {Link,useNavigate} from 'react-router-dom'
-
+import { useMutation } from "@tanstack/react-query"
+import { toast, Toaster } from "react-hot-toast"
+import { useUser } from "@/context/userContext"
 export function SignupForm({
   className,
   ...props
 }) {
+    const {userData, setUserData} = useUser();
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -26,11 +29,33 @@ export function SignupForm({
           [name]: value,
         }));
       };
-    
+      const {mutate,isError,isPending,error}=useMutation({
+      mutationFn:async({firstName,lastName,email,username,password})=>{
+          const res=await fetch('/api/auth/signup',{
+            method:'POST',
+            headers:{
+              'Content-Type':'application/json'
+            },
+            body:JSON.stringify({firstName,lastName,email,username,password})}
+          )
+          setUserData({firstName,lastName,email,username});
+          const data=await res.json();
+          if(!res.ok)throw new Error(data.error || "Failed to create account");
+          console.log(data);
+          return data;
+      },
+      onSuccess:()=>{
+        toast.success("Account created successfully");
+        navigate('/onboarding',{ state: { name: formData.firstName } });
+      },
+      onError:(error)=>{
+        toast.error(error.message);
+      }
+    });
       const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(formData);
-        navigate("/onboarding")
+        mutate(formData);
+        
       };
   return (
     <div className={cn("flex flex-col gap-8", className)} {...props}>
@@ -65,10 +90,10 @@ export function SignupForm({
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="password">Password *</Label>
-                <Input name="password" type="password" minLength="6" required value={formData.password} onChange={handleInputChange}/>
+                <Input name="password" type="password"  required value={formData.password} onChange={handleInputChange}/>
               </div>
               <Button type="submit" className="w-full">
-                Create Account 
+                {isPending?"Loading...":"Create Account"}
               </Button>
               <div className="text-center text-sm">
                 Already have an account?{" "}
