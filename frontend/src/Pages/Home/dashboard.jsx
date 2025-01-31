@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 
 function Dashboard() {
   return (
-    <div className='bg-black flex flex-col h-screen text-white w-full'>
+    <div className='bg-black flex flex-col min-h-screen text-white w-full'>
     <HomeNav/>
     <Outlet/>
     </div>

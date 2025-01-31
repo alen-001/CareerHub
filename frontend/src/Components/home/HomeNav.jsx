@@ -5,6 +5,7 @@
   import {Menu,X} from 'lucide-react'
   import logo from '@/assets/logo.png'
 import { cn } from '@/lib/utils'
+import ProfileDropdown from './ProfileDropdown'
   function HomeNav() {
     const [isOpen, setIsOpen] = useState(false)
 
@@ -41,6 +42,7 @@ import { cn } from '@/lib/utils'
           <NavLink to='/app/recommendations' className={({isActive, isPending})=>cn("m-0 p-0",!isActive?"text-zinc-100/80":"text-white")}>
             Recommendations
           </NavLink >
+          <ProfileDropdown/>
         </div>
       </nav>
     )

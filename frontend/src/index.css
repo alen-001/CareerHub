@@ -8,6 +8,9 @@ input[type="month"] {
 
   color-scheme: dark;
 }
+li{
+  color-scheme: dark;
+}
 @layer base {
   :root {
     --background: 0 0% 0%;

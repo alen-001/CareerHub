@@ -80,5 +80,16 @@ export async function parseResume(req,res){
 }
 export function checkResume(req,res){
     const jd=req.body.jd;
+    if(!jd) return res.status(400).json({error:'No job description provided'});
+    const dummyResponse={
+        "Fitment Score": 8.5,
+        "Missing Skills/keywords": ["Computer vision", "Structure from Motion (SFM) pipeline", "Photogrammetry"],
+        "Resume Improvement Suggestions": [
+          "Highlight any experience or projects related to computer vision or photogrammetry",
+          "Include any relevant coursework or certifications in machine learning or computer vision"
+        ],
+        "Personalized Advice": "Your strong programming skills and experience in developing projects using various technologies make you a strong candidate for this role. To increase your chances of getting selected, it would be beneficial to highlight any experience or knowledge you have in the field of computer vision and photogrammetry. Additionally, gaining more exposure to Structure from Motion (SFM) pipeline would make your profile even more attractive for this role."
+      }
+    res.status(200).json({message:'Resume checked successfully',data:dummyResponse});
 
 }

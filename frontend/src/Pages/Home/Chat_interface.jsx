@@ -12,7 +12,9 @@ import {
   SheetTrigger
 } from "@/components/ui/sheet"
 import ThinkingAnimation  from "@/components/ui/thinking-animation"
-
+import axios from "axios"
+import { useMutation,useQuery } from "@tanstack/react-query"
+import toast from "react-hot-toast"
 const dummyResponses = [
   "That's an interesting question! Let me think about it for a moment.",
   "I'm not entirely sure, but here's what I know about that topic...",
@@ -27,48 +29,64 @@ const dummyResponses = [
 ]
 
 export default function ChatInterface({ sessionId, sessions, setSessions }) {
-    const [input, setInput] = useState("");
-    const [isThinking, setIsThinking] = useState(false);
-    const messagesEndRef = useRef(null);
-  
-    // Find the current session messages
-    const session = sessions.find(s => s.id === sessionId);
-    const messages = session ? session.messages : [];
-  
-    const scrollToBottom = () => {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
-  
-    useEffect(() => {
+  const [input, setInput] = useState("");
+  const messagesEndRef = useRef(null);
+
+  // Find the current session messages
+  const session = sessions?.find((s) => s.sessionId === sessionId);
+  const messages = session ? session.messages : [];
+
+  // Scroll to the bottom of chat
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  // Mutation to send message
+  const { mutate, isError, isLoading, error } = useMutation({
+    mutationFn: async ({ sessionId, message }) => {
+      console.log(sessionId, message);
+      const res = await axios.post("/api/chatbot/chat", { sessionId:sessionId, message });
+      return res.data;
+    },
+    onSuccess: (data) => {
+      const newBotMessage = { timestamp: Date.now(), text: data.message, human: false };
+
+      setSessions((prev) =>
+        prev.map((s) =>
+          s.sessionId === sessionId ? { ...s, messages: [...s.messages, newBotMessage] } : s
+        )
+      );
       scrollToBottom();
-    }, [messages]);
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error(`Error: ${error.message}`);
+    },
+  });
 
-    const handleSend = () => {
-      if (!session) return;
-  
-      if (input.trim()) {
-        const newUserMessage = { id: Date.now(), text: input, human: true };
-        const updatedSessions = sessions.map(s =>
-          s.id === sessionId ? { ...s, messages: [...s.messages, newUserMessage] } : s
-        );
-  
-        setSessions(updatedSessions);
-        setInput("");
-        setIsThinking(true);
-  
-        setTimeout(() => {
-          const randomResponse = dummyResponses[Math.floor(Math.random() * dummyResponses.length)];
-          const newBotMessage = { id: Date.now(), text: randomResponse, human:false };
-          setSessions(prev =>
-            prev.map(s =>
-              s.id === sessionId ? { ...s, messages: [...s.messages, newBotMessage] } : s
-            )
-          );
+  // Handle sending message
+  const handleSend = () => {
+    if (!session || !input.trim()) return;
 
-          setIsThinking(false);
-        }, 2000);
-      }
-    };
+    const newUserMessage = { timestamp: Date.now(), text: input, human: true };
+
+    // Optimistically update UI before API call
+    setSessions((prev) =>
+      prev.map((s) =>
+        s.sessionId === sessionId ? { ...s, messages: [...s.messages, newUserMessage] } : s
+      )
+    );
+
+    setInput("");
+
+    // Send message to backend
+    mutate({ sessionId, message: input });
+  };
+
   return (
     <div className=" w-full  -m-8 sm:p-6 md:p-8 flex items-center justify-center">
       <div className="w-full max-w-7xl h-[calc(80vh)] rounded-3xl backdrop-blur-xl bg-black text-white hover:border-zinc-800 border border-zinc-900 shadow-lg overflow-hidden flex flex-col">
@@ -81,50 +99,6 @@ export default function ChatInterface({ sessionId, sessions, setSessions }) {
             
             <span className="font-medium">ShepherdAI - {session?.title}</span>
           </div>
-          {/* <Sheet open={isProfileOpen} onOpenChange={setIsProfileOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full hover:bg-white/30 transition-colors"
-              >
-                <User className="w-5 h-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent className="w-[300px] sm:w-[400px] backdrop-blur-xl bg-white/80">
-              <SheetHeader>
-                <SheetTitle>Profile</SheetTitle>
-              </SheetHeader>
-              <div className="mt-6 space-y-6">
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium">Account</h3>
-                  <div className="flex items-center gap-4 p-4 rounded-lg bg-white/50">
-                    <div className="h-10 w-10 rounded-full bg-zinc-800 flex items-center justify-center">
-                      <User className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Guest User</p>
-                      <p className="text-sm text-zinc-600">guest@example.com</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium">Preferences</h3>
-                  <div className="space-y-2">
-                    <Button variant="outline" className="w-full justify-start">
-                      Theme Settings
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      Notification Settings
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      Language Settings
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet> */}
         </div>
 
         {/* Main Content */}
@@ -149,7 +123,7 @@ export default function ChatInterface({ sessionId, sessions, setSessions }) {
             <div className="space-y-4">
               {messages.map(message => (
                 <div
-                  key={message.id}
+                  key={message._id}
                   className={`flex ${
                     message.human? "justify-end" : "justify-start"
                   }`}
@@ -165,7 +139,7 @@ export default function ChatInterface({ sessionId, sessions, setSessions }) {
                   </div>
                 </div>
               ))}
-              {isThinking && (
+              {isLoading && (
                 <div className="flex justify-start">
                   <div className={`max-w-[70%] p-3 rounded-lg ${colors.green} backdrop-blur-sm`}>
                     <ThinkingAnimation />
@@ -230,7 +204,7 @@ export default function ChatInterface({ sessionId, sessions, setSessions }) {
               onKeyPress={e => e.key === "Enter" && handleSend()}
               placeholder="Ask SherpherdAI anything..."
               className="pl-12 pr-24 py-6"
-              disabled={isThinking}
+              disabled={isLoading}
             />
             <Button
               onClick={handleSend}

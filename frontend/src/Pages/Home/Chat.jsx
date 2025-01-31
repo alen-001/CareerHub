@@ -4,38 +4,88 @@ import { Card, CardFooter, CardHeader,CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { MessagesSquare, Plus, PlusCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
-function createSessionId(){
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+import { useQuery,useMutation } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
+import { v4 as uuidv4 } from 'uuid';
+function generateId(){
+  return uuidv4();
 }
 function Chat() {
-    const [sessions, setSessions] = useState([]);
-    const [currentSessionId, setCurrentSessionId] = useState(null);
-    const initialized = useRef(false);
-    function goToSession(id) {
-      console.log("goToSession called with id:", id);
-      setCurrentSessionId(id);
-    }
-    useEffect(()=>{
-        console.log(sessions);
-    },[sessions]);
-    function startNewChat() {
-      if (sessions.length === 0 || (sessions.length>0 && currentSessionId)) {
-        const sessionId = createSessionId();
-        const session = { id: sessionId, title: `Chat ${sessions.length + 1}`, messages: [] };
-        setSessions(prev => [...prev, session]);
-        
-        setCurrentSessionId(sessionId);
-      } else {
-        console.log('chat already started');
-      }
-    }
+  const [sessions, setSessions] = useState([]);
+  const [currentSessionId, setCurrentSessionId] = useState(null);
   
-    useEffect(() => {
-      if(!initialized.current){
-        startNewChat();
-        initialized.current = true;
+  const { data:fetchedSessionData, isLoading, error } = useQuery({
+    queryKey: ['sessions'],
+    enabled: true,
+    queryFn: 
+    async () => {
+      const response = await fetch('/api/chatbot/sessions');
+      const data = await response.json();
+      if(!response.ok){
+        throw new Error(data.error || 'Failed to fetch sessions');
       }
-    }, []);  
+      console.log('Sessions:', data);
+      if (data) {
+        const formattedSessions = Object.values(data).map((session, idx) => ({
+          sessionId: session.sessionId,
+          title: `Chat ${idx + 1}`,
+          messages: session.messages.map((msg) => ({
+            timestamp: msg.timestamp,
+            _id: generateId(),
+            text: msg.message,
+            human: msg.human,
+          })),
+        }));
+        console.log('Formatted sessions:', formattedSessions);
+        setSessions(formattedSessions);
+        // Set the latest session as current if available
+        if (formattedSessions.length > 0) {
+          setCurrentSessionId(formattedSessions[0].sessionId);
+        }
+      }
+      return data;
+    },
+    onError: (error) => {
+      console.error('Failed to fetch sessions:', error);
+      toast.error(`Failed to fetch sessions: ${error.message}`);
+    },
+  });
+  
+  const { mutate, isError, error: startChatError, isPending } = useMutation({
+    mutationFn: async () => {
+      const response = await fetch('/api/chatbot/start-chat');
+      const data = await response.json();
+      return data;
+    },
+    onSuccess: (data) => {
+      console.log('Chat started successfully:', data);
+      setSessions((prev) => [...prev, { sessionId: data.sessionId, title: `Chat ${prev.length + 1}`, messages: [] }]);
+      setCurrentSessionId(data.sessionId);
+    },
+    onError: (error) => {
+      console.error('Chat start failed:', error);
+      toast.error(`Chat start failed: ${error.message}`);
+    },
+  });
+  
+  function goToSession(id) {
+    console.log('goToSession called with id:', id);
+    setCurrentSessionId(id);
+  }
+  
+  function startNewChat() {
+    mutate(); // Start new chat via backend
+  }
+  
+  // Ensure we only start a new chat if there are no sessions
+  useEffect(() => {
+    console.log(isLoading, fetchedSessionData);
+    if (!isLoading && fetchedSessionData && fetchedSessionData.length === 0) {
+      startNewChat();
+    }
+  }, [isLoading, fetchedSessionData]);
+  
+  
   return (
 <div className="flex flex-row  mt-20 gap-2 w-full h-full p-10">
   {/* Sidebar - Fixed width */}
@@ -46,9 +96,9 @@ function Chat() {
         </CardHeader>
         <CardContent className='overflow-y-auto no-scrollbar'>
             {sessions.map((session,idx)=>(
-                <div key={session.id} 
+                <div key={session.sessionId} 
                 className={cn('p-2   text-center text-white border-l m-2 rounded-md bg-zinc-900 border-zinc-800 hover:bg-zinc-800')}
-                onClick={()=>goToSession(session.id)}
+                onClick={()=>goToSession(session.sessionId)}
                 >
                     {session.title}
                 </div>
