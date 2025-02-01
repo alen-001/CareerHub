@@ -2,7 +2,7 @@ import { DropdownMenu,DropdownMenuItem,DropdownMenuTrigger,DropdownMenuContent,D
 
 import { User,LogOut } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-
+import { Link } from 'react-router-dom'
 import React from 'react'
 import { Button } from '../ui/button'
 import axios from 'axios'
@@ -28,9 +28,11 @@ function ProfileDropdown() {
             <User size={18}  strokeWidth={1}/>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-24'>
+      <Link to='/onboarding/upload'>
       <DropdownMenuItem>
         Profile
       </DropdownMenuItem>
+      </Link>
       <DropdownMenuSeparator />
         <DropdownMenuItem className='text-red-500' onClick={handleLogout} >
             Log out<LogOut size={18}  strokeWidth={1} />
