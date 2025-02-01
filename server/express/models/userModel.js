@@ -16,8 +16,8 @@ const userSchema = new mongoose.Schema({
     {
       jobTitle: { type: String },
       company: { type: String },
-      startYear: { type: Number },
-      endYear: { type: Number },
+      startYear: { type: String },
+      endYear: { type: String },
       responsibilities: { type: String },
     },
   ],
@@ -25,8 +25,8 @@ const userSchema = new mongoose.Schema({
     {
       schoolName: { type: String },
       degree: { type: String },
-      startYear: { type: Number },
-      endYear: { type: Number },
+      startYear: { type: String },
+      endYear: { type: String },
       major: { type: String },
     },
   ],

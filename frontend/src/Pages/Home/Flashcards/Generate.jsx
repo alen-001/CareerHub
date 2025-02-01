@@ -66,7 +66,7 @@ function Generate() {
       {(loading && !visible)?
         <>
           <Textarea placeholder="Enter text to generate.."  required onChange={(e) => setInputText(e.target.value)} value={inputText} className=" w-1/2"></Textarea>
-          <Button className='p' type="submit" onClick={() => {
+          <Button className='mt-4' type="submit" onClick={() => {
               if (!inputText.trim()) {
                 toast.error('Please enter some text');
               } else {

@@ -191,7 +191,7 @@ export default function ProfileBuilder() {
       },
       onSuccess:()=>{
         toast.success("Profile built successfully");
-        navigate('/app');
+        navigate('/app/recommendations');
       },
       onError:(error)=>{
         toast.error(error.message);

@@ -42,7 +42,7 @@ export function LoginForm({
       },
     onSuccess:()=>{
       toast.success("Login successful");
-      navigate('/app');
+      navigate('/app/recommendations');
     },
     onError:(error)=>{
       toast.error(error.message);

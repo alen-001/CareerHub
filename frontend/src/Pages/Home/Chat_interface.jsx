@@ -15,18 +15,7 @@ import ThinkingAnimation  from "@/components/ui/thinking-animation"
 import axios from "axios"
 import { useMutation,useQuery } from "@tanstack/react-query"
 import toast from "react-hot-toast"
-const dummyResponses = [
-  "That's an interesting question! Let me think about it for a moment.",
-  "I'm not entirely sure, but here's what I know about that topic...",
-  "Great question! The answer might surprise you.",
-  "I'd be happy to help you with that. Here's what I can tell you...",
-  "That's a complex issue. Let me break it down for you.",
-  "I'm always learning new things, and your question has given me something to ponder.",
-  "While I don't have all the answers, I can share some insights on that topic.",
-  "That's a fascinating area to explore. Here's my perspective on it...",
-  "I'm glad you asked that. It's an important question to consider.",
-  "Let me consult my database and get back to you with the most accurate information."
-]
+import Markdown from "react-markdown"
 
 export default function ChatInterface({ sessionId, sessions, setSessions }) {
   const [input, setInput] = useState("");
@@ -122,6 +111,7 @@ export default function ChatInterface({ sessionId, sessions, setSessions }) {
               </p>
             </div>
           ) : (
+            
             <div className="space-y-4">
               {messages.map(message => (
                 <div
@@ -137,7 +127,7 @@ export default function ChatInterface({ sessionId, sessions, setSessions }) {
                         : `${colors.green}`
                     }`}
                   >
-                    {message.text}
+                    <Markdown>{message.text}</Markdown>
                   </div>
                 </div>
               ))}

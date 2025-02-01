@@ -22,13 +22,6 @@ export function EducationAndSkills({
             setProfile(prev => ({ ...prev, skills: newTags }))
           }
           placeholder="Add a skill"
-          suggestions={[
-            { id: "react", label: "React" },
-            { id: "nextjs", label: "Next.js" },
-            { id: "typescript", label: "TypeScript" },
-            { id: "javascript", label: "JavaScript" },
-            { id: "tailwindcss", label: "Tailwind CSS" }
-          ]}
         />
       </div>
 

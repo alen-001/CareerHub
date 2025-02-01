@@ -20,10 +20,11 @@ export function TagInput({
   tags,
   setTags,
   suggestions = [],
-  maxTags = 10,
+  maxTags = 25,
   label,
   placeholder = "Add tags...",
-  error
+  error,
+  className
 }) {
   const [input, setInput] = useState("")
   const [isOpen, setIsOpen] = useState(false)
@@ -68,7 +69,7 @@ export function TagInput({
   }
 
   return (
-    <div className="w-full space-y-2" ref={containerRef}>
+    <div className={cn("w-full space-y-2",className)} ref={containerRef}>
       {label && (
         <label
           className="text-sm font-medium text-zinc-800 dark:text-zinc-200"
