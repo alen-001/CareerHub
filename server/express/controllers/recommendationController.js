@@ -1,30 +1,48 @@
+import axios from "axios";
+const FAST_API_URL = 'http://localhost:8000';
 function selectSkill(skills){
     if(skills.length>0)return skills[Math.floor(Math.random()*skills.length)];
     else return null;
 }
-export function getRecommendations(req, res) {
+export async function getRecommendations(req, res) {
     try{
         const user=req.user;
         const skills = user.skills;
         const desiredSkills = user.desiredSkills;
         if(skills.length==0){
-            res.status(404).send({ message: 'No Skills Found' });
+            res.status(404).send({ message: 'No Skills Found' ,user});
+            return;
         }
         let selectedSkill=selectSkill(skills);
-        const recommendations1 = [];
-        recommendations1.push(selectedSkill);
-        const recommendations2 = [];
+        const response1=await axios.post(`${FAST_API_URL}/api/recommend-courses`,{text:selectedSkill});
         selectedSkill=selectSkill(desiredSkills);
-        if(selectedSkill!=null)recommendations2.push(selectedSkill);
-        //Based on your desired skills
-        // axios.post('http://localhost:5000/skills', {skill: selectedSkill}).then((response)=>{
-        //     recommendations1.push(response.data);
-        // })
-        // selectedSkills=selectSkill(desiredSkills);
-        // axios.post('http://localhost:5000/skills', {skill: selectedSkills}).then((response)=>{
-        //     recommendations2.push(response.data);
-        // })  
-        res.status(200).send({recommendations1,recommendations2});
+        let response2=[];
+        if(selectedSkill)response2=await axios.post(`${FAST_API_URL}/api/recommend-courses`,{text:selectedSkill});
+
+        // const response1={
+        //     "url": {
+        //         "8454": "https://www.coursera.org/professional-certificates/mathworks-computer-vision-engineer",
+        //         "3699": "https://www.coursera.org/learn/introduction-computer-vision-watson-opencv",
+        //         "1859": "https://www.udemy.com/course/mastering-computer-vision-theory-projects-in-python/",
+        //         "5955": "https://www.coursera.org/learn/intro-self-driving-cars",
+        //         "7594": "https://www.coursera.org/learn/build-basic-generative-adversarial-networks-gans"
+        //     },
+        //     "course_title": {
+        //         "8454": "MathWorks Computer Vision Engineer",
+        //         "3699": "Introduction to Computer Vision and Image Processing",
+        //         "1859": "Computer Vision in Python for Beginners (Theory & Projects)",
+        //         "5955": "Introduction to Self-Driving Cars",
+        //         "7594": "Build Basic Generative Adversarial Networks (GANs)"
+        //     },
+        //     "popularity_score": {
+        //         "8454": 4.682264150943396,
+        //         "3699": 4.296694850115296,
+        //         "1859": 4.384879725085911,
+        //         "5955": 4.698379869010686,
+        //         "7594": 4.697651174412794
+        //     }
+        //   };
+        res.status(200).send({recs:response1.data,drecs:response2.data});
     }catch(err){
         console.log("Error in recommendation controller", err.message);
         res.status(500).send({ message: 'Internal Server Error' });

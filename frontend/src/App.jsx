@@ -13,7 +13,8 @@ import ChatInterface from './Pages/Home/Chat_interface'
 import { Toaster } from 'react-hot-toast'
 import { UserProvider } from './context/userContext.jsx'
 import Checker from './Pages/Home/Checker.jsx'
-
+import Generate from './Pages/Home/Flashcards/Generate.jsx'
+import Recommend from './Pages/Home/Recommend/Recommend.jsx'
 function App() {
   return (
     <UserProvider>
@@ -30,6 +31,8 @@ function App() {
       <Route index element={<Home/>}/>
       <Route path='chat' element={<Chat/>}/>
       <Route path='checker' element={<Checker/>}/>
+      <Route path='flashcards' element={<Generate/>}/>
+      <Route path='recommendations' element={<Recommend/>}/>
       <Route path='*' element={<div className='text-4xl text-white flex justify-center items-center h-screen w-screen font-semibold font-mono'>404 | Page not found</div>}/>
     </Route>
     <Route path='/chat' element={<ChatInterface/>}/>

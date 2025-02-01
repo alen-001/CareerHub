@@ -31,7 +31,7 @@ const dummyResponses = [
 export default function ChatInterface({ sessionId, sessions, setSessions }) {
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
-
+  const [loading,setLoading]=useState(false);
   // Find the current session messages
   const session = sessions?.find((s) => s.sessionId === sessionId);
   const messages = session ? session.messages : [];
@@ -49,17 +49,19 @@ export default function ChatInterface({ sessionId, sessions, setSessions }) {
   const { mutate, isError, isLoading, error } = useMutation({
     mutationFn: async ({ sessionId, message }) => {
       console.log(sessionId, message);
+      setLoading(true);
       const res = await axios.post("/api/chatbot/chat", { sessionId:sessionId, message });
       return res.data;
     },
     onSuccess: (data) => {
       const newBotMessage = { timestamp: Date.now(), text: data.message, human: false };
-
+      setLoading(false);
       setSessions((prev) =>
         prev.map((s) =>
           s.sessionId === sessionId ? { ...s, messages: [...s.messages, newBotMessage] } : s
         )
       );
+      
       scrollToBottom();
     },
     onError: (error) => {
@@ -139,7 +141,7 @@ export default function ChatInterface({ sessionId, sessions, setSessions }) {
                   </div>
                 </div>
               ))}
-              {isLoading && (
+              {loading && (
                 <div className="flex justify-start">
                   <div className={`max-w-[70%] p-3 rounded-lg ${colors.green} backdrop-blur-sm`}>
                     <ThinkingAnimation />
@@ -204,7 +206,7 @@ export default function ChatInterface({ sessionId, sessions, setSessions }) {
               onKeyPress={e => e.key === "Enter" && handleSend()}
               placeholder="Ask SherpherdAI anything..."
               className="pl-12 pr-24 py-6"
-              disabled={isLoading}
+              disabled={loading}
             />
             <Button
               onClick={handleSend}

@@ -20,5 +20,10 @@ export default defineConfig({
         changeOrigin:true,
       }
     }
-  }
+  },
+  images: {
+    domains: [
+      "api.microlink.io", // Microlink Image Preview
+    ],
+  },
 })

@@ -36,7 +36,7 @@ export default function ProfileBuilder() {
     username: userData?.username || "",
     phoneNumber: "",
     socialLinks: { linkedIn: "", gitHub: "" },
-    workExperience: userData?.workExperience.map(
+    workExperience: userData?.workExperience?.map(
       exp => ({
         jobTitle: exp.jobTitle,
         company: exp.company,
@@ -56,12 +56,12 @@ export default function ProfileBuilder() {
     educationDetails: userData?.educationDetails || [
       { schoolName: "", degree: "", startYear: "", endYear: "", major: "" }
     ],
-    skills: userData?.skills.map(skill => ({ id: skill, label: skill })) || [],
-    desiredSkills: userData?.desiredSkills.map(skill => ({ id: skill, label: skill })) || [],
-    projects: userData?.projects.map(project =>({
+    skills: userData?.skills?.map(skill => ({ id: skill, label: skill })) || [],
+    desiredSkills: userData?.desiredSkills?.map(skill => ({ id: skill, label: skill })) || [],
+    projects: userData?.projects?.map(project =>({
       name: project.name,
       description: project.description,
-      technologiesUsed: project.technologiesUsed.map(technology => ({ id: technology, label: technology }))
+      technologiesUsed: project.technologiesUsed?.map(technology => ({ id: technology, label: technology }))||[]
     })) || [{ name: "", description: "", technologiesUsed: [] }]
     })
 

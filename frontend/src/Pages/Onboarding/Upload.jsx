@@ -29,20 +29,31 @@ function Upload() {
             //     throw new Error(response2.data.error || "Failed to parse file");
             // }
             const data=await response2.data;
-            const workExperience=data.workExperience;
-            const educationDetails=data.educationDetails;
-            const skills=data.skills;
-            const desiredSkills=data.desiredSkills;
-            const projects=data.projects;
-            setUserData({workExperience,educationDetails,skills,desiredSkills,projects});
             return {res1:response1.data, res2:response2.data};
         },
-            onSuccess: (data) => {
-                console.log('File uploaded and parsed successfully:', data);
-                toast.success('uploaded successfully');
-                navigate('/onboarding/profile');
-                 // Redirect after success
-            },
+        onSuccess: (data) => {
+            console.log('File uploaded and parsed successfully:', data);
+            
+            // Extract parsed resume details
+            const parsedData = data.res2;  // response2.data
+            const updatedUserData = {
+                name: parsedData.Name,
+                contactInfo: parsedData["Contact Information"],
+                skills: parsedData.Skills,
+                educationDetails: parsedData.Education,
+                workExperience: parsedData["Work Experience"],
+                projects: parsedData.Projects,
+                desiredSkills: parsedData.desiredSkills || [], // Handle missing field gracefully
+            };
+        
+            // Update user state
+            setUserData(updatedUserData);
+        
+            console.log('Updated userData:', updatedUserData);
+            toast.success('Uploaded successfully');
+            navigate('/onboarding/profile');
+        }
+        ,
             onError: (error) => {
                 console.error('Upload failed:', error);
                 toast.error(`Upload failed ${error.message}`);
