@@ -4,6 +4,6 @@
 .venv
 
 # Dataset
-
+.env
 # Folder 
 venv
