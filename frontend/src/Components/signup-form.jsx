@@ -6,9 +6,10 @@ import { Label } from "@/components/ui/label"
 import logo from "../assets/logo.svg"
 import {useState} from 'react'
 import {Link,useNavigate} from 'react-router-dom'
-import { useMutation } from "@tanstack/react-query"
+import { useMutation ,useQueryClient} from "@tanstack/react-query"
 import { toast, Toaster } from "react-hot-toast"
 import { useUser } from "@/context/userContext"
+const queryClient=useQueryClient();
 const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 export function SignupForm({
   className,
@@ -48,6 +49,7 @@ export function SignupForm({
       },
       onSuccess:()=>{
         toast.success("Account created successfully");
+        queryClient.invalidateQueries(["authUser"]);
         navigate('/onboarding',{ state: { name: formData.firstName } });
       },
       onError:(error)=>{
