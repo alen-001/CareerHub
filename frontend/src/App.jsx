@@ -9,6 +9,7 @@ import ProfileBuilder from './Pages/Onboarding/Profile'
 import Home from './Pages/Home/Home'
 import Chat from './Pages/Home/Chat'
 import toast, { Toaster } from 'react-hot-toast'
+import LoadingScreen from './components/LoadingScreen.jsx'
 import { UserProvider } from './context/userContext.jsx'
 import Checker from './Pages/Home/Checker.jsx'
 import Generate from './Pages/Home/Flashcards/Generate.jsx'
@@ -29,13 +30,16 @@ function App() {
     }
   }
   })
-  if(isLoading){
-    return(
-      <div className='h-screen w-screen flex justify-center items-center'>
-        Loading...
-      </div>
-    )
-  }
+  // return(
+  //   <LoadingScreen/>
+  // )
+  // if(isLoading){
+  //   return(
+  //     <div className='h-screen w-screen flex justify-center items-center'>
+  //       Loading...
+  //     </div>
+  //   )
+  // }
   return (
     <UserProvider>
     <Routes>
@@ -47,7 +51,7 @@ function App() {
       <Route path='upload' element={<Upload/>}/>
       <Route path='profile' element={<ProfileBuilder/>}/>
     </Route>
-    <Route path='/app' element={authUser?<Dashboard/>:<Navigate to='/login'/>}>
+    <Route path='/app' element={authUser?<Dashboard/>:isLoading?<LoadingScreen/>:<Navigate to='/login'/>}>
       <Route index element={<Home/>}/>
       <Route path='chat' element={<Chat/>}/>
       <Route path='checker' element={<Checker/>}/>
