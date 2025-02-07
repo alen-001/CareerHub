@@ -24,7 +24,7 @@ function App() {
         console.log(data);
         return data;
       }catch(err){
-        toast.error(err.message);
+        console.log(err);
     }
   }
   })
