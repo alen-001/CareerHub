@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Card, CardContent, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 function Checker() {
     const [file, setFile] = useState(null);
     const [jd, setJd] = useState('');
@@ -15,10 +16,10 @@ function Checker() {
             formData.append('filename', "resume");
             formData.append('pdf_file', selectedFile);
 
-            const response1 = await axios.post('/api/resume/upload', formData, {
+            const response1 = await axios.post(`${API_BASE_URL}/resume/upload`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-            const response2 = await axios.post('/api/resume/check',{jd});
+            const response2 = await axios.post(`${API_BASE_URL}/resume/check`,{jd});
             // if(!response2.ok){
             //     throw new Error(response2.data.error || "Failed to parse file");
             // }

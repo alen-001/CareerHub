@@ -13,14 +13,6 @@ export default defineConfig({
  
     },
   },
-  server:{
-    proxy:{
-      "/api":{
-        target:"https://careerhub-z4m6.onrender.com",
-        changeOrigin:true,
-      }
-    }
-  },
   images: {
     domains: [
       "api.microlink.io", // Microlink Image Preview

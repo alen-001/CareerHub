@@ -9,6 +9,7 @@ import {Link,useNavigate} from 'react-router-dom'
 import { useMutation } from "@tanstack/react-query"
 import { toast, Toaster } from "react-hot-toast"
 import { useUser } from "@/context/userContext"
+const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 export function SignupForm({
   className,
   ...props
@@ -31,7 +32,7 @@ export function SignupForm({
       };
       const {mutate,isError,isPending,error}=useMutation({
       mutationFn:async({firstName,lastName,email,username,password})=>{
-          const res=await fetch('/api/auth/signup',{
+          const res=await fetch(`${API_BASE_URL}/auth/signup`,{
             method:'POST',
             headers:{
               'Content-Type':'application/json'

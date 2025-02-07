@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { useUser } from '@/context/userContext'
+const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 function Upload() {
     const navigate = useNavigate();
     const [file, setFile] = useState(null);
@@ -18,13 +19,13 @@ function Upload() {
             formData.append('filename', "resume");
             formData.append('pdf_file', selectedFile);
 
-            const response1 = await axios.post('/api/resume/upload', formData, {
+            const response1 = await axios.post(`${API_BASE_URL}/resume/upload`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             // if(!response1.ok){
             //     throw new Error(response1.data.error || "Failed to upload file");
             // }
-            const response2 = await axios.get('/api/resume/parse');
+            const response2 = await axios.get(`${API_BASE_URL}/resume/parse`);
             // if(!response2.ok){
             //     throw new Error(response2.data.error || "Failed to parse file");
             // }

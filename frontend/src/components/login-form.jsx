@@ -8,6 +8,7 @@ import React,{useState} from "react"
 import {Link,useNavigate} from 'react-router-dom'
 import toast from "react-hot-toast"
 import { useMutation } from "@tanstack/react-query"
+const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 export function LoginForm({
   className,
   ...props
@@ -27,7 +28,7 @@ export function LoginForm({
           username=email;
           email="";
         }
-        const res=await fetch('/api/auth/login',{
+        const res=await fetch(`${API_BASE_URL}/auth/login`,{
           method:'POST',
           headers:{
             'Content-Type':'application/json'

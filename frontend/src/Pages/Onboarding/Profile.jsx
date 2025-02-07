@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom"
 import { useLocation } from "react-router-dom"
 import { useUser } from "@/context/userContext"
 import { useMutation,useQuery } from "@tanstack/react-query"
+const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 const formSteps = [
   { title: "Basic Information", component: BasicInfo },
   { title: "Education and Skills", component: EducationAndSkills },
@@ -129,7 +130,7 @@ export default function ProfileBuilder() {
   const { data: da, isLoading, error :er} = useQuery({
     queryKey: ["profile"],
     queryFn: async () => {
-      const response = await axios.get("/api/auth/me"); // Replace with your API endpoint
+      const response = await axios.get(`${API_BASE_URL}/auth/me`); // Replace with your API endpoint
       return response.data;
     }
   });
@@ -182,7 +183,7 @@ export default function ProfileBuilder() {
             }
         )
         console.log({firstName,lastName,email,username,phoneNumber,socialLinks,workExperience,educationDetails,skills,desiredSkills,projects});
-        const res=await axios.put('/api/user/update',{firstName,lastName,email,username,phoneNumber,socialLinks,workExperience,educationDetails,skills,desiredSkills,projects},
+        const res=await axios.put(`${API_BASE_URL}/user/update`,{firstName,lastName,email,username,phoneNumber,socialLinks,workExperience,educationDetails,skills,desiredSkills,projects},
         {
             headers:{
                 'Content-Type':'application/json'

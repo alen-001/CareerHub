@@ -6,6 +6,7 @@ import { color, motion } from "framer-motion";
 import axios from "axios";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+const FAST_API_URL=import.meta.env.VITE_FAST_API_URL;
 function Generate() {
   const LoadingCard=[{
     id:0,
@@ -20,7 +21,7 @@ function Generate() {
   async function GenerateFlash(){
     setLoading(true);
     setVisible(true);
-    const questions=await axios.post('http://localhost:8000/api/generate-questions', { text: inputText });
+    const questions=await axios.post(`${FAST_API_URL}/generate-questions`, { text: inputText });
     for(let i=0;i<questions.data.length;i++){
       cards.push({
         id:i,
@@ -31,7 +32,7 @@ function Generate() {
     };
     setLoading(false);
     setQA_pair(cards);
-    const answers=await axios.get('http://localhost:8000/api/generate-answers');
+    const answers=await axios.get(`${FAST_API_URL}/generate-answers`);
     for(let i=0;i<cards.length;i++){
       cards[i].backHTML=answers.data[i];
       console.log(answers.data[i]);

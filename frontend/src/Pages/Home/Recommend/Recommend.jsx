@@ -12,6 +12,7 @@ function Recommend() {
   const [explicitRecs,setExplicitRecs] = useState(null);
   const [explictLoading,setExplicitLoading] = useState(false);
   // const [skills,setSkills] = useState([]);
+  const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
   const [skills,setSkills] = useState('');
   function searchHandler(){
     if(!skills){
@@ -20,7 +21,7 @@ function Recommend() {
     }
     const fetchRecommendations = async () => {
       setExplicitLoading(true);
-      const response = await axios.post('/api/recommendations/explicit', { text:skills });
+      const response = await axios.post(`${API_BASE_URL}/recommendations/explicit`, { text:skills });
       return response.data;
     };
 
@@ -44,7 +45,7 @@ function Recommend() {
   const {data,isPending,error}=useQuery({
     queryKey: ['recommendations'],
     queryFn: async () => {
-      const response=await fetch('/api/recommendations');
+      const response=await fetch(`${API_BASE_URL}/recommendations`);
       const data=await response.json();
       if(!response.ok){
         throw new Error(data.error || 'Failed to fetch recommendations');

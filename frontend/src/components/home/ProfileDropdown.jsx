@@ -7,10 +7,11 @@ import React from 'react'
 import { Button } from '../ui/button'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 function ProfileDropdown() {
     const navigate = useNavigate();
     const handleLogout = () => {
-        axios.post('/api/auth/logout')
+        axios.post(`${API_BASE_URL}/auth/logout`)
         .then((res) => {
             console.log(res);
             toast.success('Logged out successfully');

@@ -4,6 +4,7 @@ import { Send, User, Cross, Rocket, FileUser, Laugh, Sidebar } from "lucide-reac
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 import {
   Sheet,
   SheetContent,
@@ -39,7 +40,7 @@ export default function ChatInterface({ sessionId, sessions, setSessions }) {
     mutationFn: async ({ sessionId, message }) => {
       console.log(sessionId, message);
       setLoading(true);
-      const res = await axios.post("/api/chatbot/chat", { sessionId:sessionId, message });
+      const res = await axios.post(`${API_BASE_URL}/chatbot/chat`, { sessionId:sessionId, message });
       return res.data;
     },
     onSuccess: (data) => {

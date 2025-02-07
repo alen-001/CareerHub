@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 function generateId(){
   return uuidv4();
 }
+const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 function Chat() {
   const [sessions, setSessions] = useState([]);
   const [currentSessionId, setCurrentSessionId] = useState(null);
@@ -19,7 +20,7 @@ function Chat() {
     enabled: true,
     queryFn: 
     async () => {
-      const response = await fetch('/api/chatbot/sessions');
+      const response = await fetch(`${API_BASE_URL}/chatbot/sessions`);
       const data = await response.json();
       if(!response.ok){
         throw new Error(data.error || 'Failed to fetch sessions');
@@ -53,7 +54,7 @@ function Chat() {
   
   const { mutate, isError, error: startChatError, isPending } = useMutation({
     mutationFn: async () => {
-      const response = await fetch('/api/chatbot/start-chat');
+      const response = await fetch(`${API_BASE_URL}/chatbot/start-chat`);
       const data = await response.json();
       return data;
     },

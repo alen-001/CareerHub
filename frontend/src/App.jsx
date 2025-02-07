@@ -15,12 +15,13 @@ import Generate from './Pages/Home/Flashcards/Generate.jsx'
 import Recommend from './Pages/Home/Recommend/Recommend.jsx'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 function App() {
   const {data:authUser,isLoading,error}=useQuery({
     queryKey:['authUser'],
     queryFn:async()=>{
       try{
-        const {data}=await axios.get('/api/auth/me');
+        const {data}=await axios.get(`${API_BASE_URL}/auth/me`);
         console.log(data);
         return data;
       }catch(err){
@@ -28,13 +29,13 @@ function App() {
     }
   }
   })
-  if(isLoading){
-    return(
-      <div className='h-screen w-screen flex justify-center items-center'>
-        Loading...
-      </div>
-    )
-  }
+  // if(isLoading){
+  //   return(
+  //     <div className='h-screen w-screen flex justify-center items-center'>
+  //       Loading...
+  //     </div>
+  //   )
+  // }
   return (
     <UserProvider>
     <Routes>
