@@ -8,11 +8,19 @@ import recommendationRoutes from './routes/recommendationRoutes.js';
 import chatbotRoutes from './routes/chatbotRoutes.js';
 import resumeRoutes from './routes/resumeRoutes.js';
 import cors from 'cors';
+const app = express();
+dotenv.config();
+app.use(cors({
+    origin: 'https://career-hub-eta.vercel.app', // Allow all origins
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+}));
+
 // import dotenv from 'dotenv';
 // dotenv.config();
 // const FAST_API_URL = process.env.FAST_API_URL;
-const app = express();
-dotenv.config();
+
+
 connectDB();
 app.use(cookieParser());
 app.use(express.json());
@@ -23,11 +31,6 @@ app.use('/api/chatbot',chatbotRoutes);
 app.use('/api/resume',resumeRoutes);
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors({
-    origin: '*', // Allow all origins
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-}));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
