@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes.js";
 import recommendationRoutes from './routes/recommendationRoutes.js';
 import chatbotRoutes from './routes/chatbotRoutes.js';
 import resumeRoutes from './routes/resumeRoutes.js';
+import flashcardsRoutes from './routes/flashcardRoutes.js';
 import cors from 'cors';
 const app = express();
 dotenv.config();
@@ -30,7 +31,7 @@ app.use("/api/auth", authRoutes);
 app.use('/api/recommendations',recommendationRoutes);
 app.use('/api/chatbot',chatbotRoutes);
 app.use('/api/resume',resumeRoutes);
-
+app.use('/api/flashcards',flashcardsRoutes);
 
 
 const PORT = process.env.PORT || 5000;

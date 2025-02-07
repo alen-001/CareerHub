@@ -6,13 +6,14 @@ import { color, motion } from "framer-motion";
 import axios from "axios";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-const FAST_API_URL=import.meta.env.VITE_FAST_API_URL;
+
 function Generate() {
   const LoadingCard=[{
     id:0,
     frontHTML:<TextShimmer>Generating your questions...</TextShimmer>,
     backHTML:<TextShimmer>Please wait...</TextShimmer>
   }];
+  const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
   const [inputText,setInputText]=useState("");
   const cards = [];
   const [qa_pair,setQA_pair]=useState([]);
@@ -21,7 +22,7 @@ function Generate() {
   async function GenerateFlash(){
     setLoading(true);
     setVisible(true);
-    const questions=await axios.post(`${FAST_API_URL}/generate-questions`, { text: inputText }, { withCredentials: true });
+    const questions=await axios.post(`${API_BASE_URL}/flashcards/generate-questions`, { text: inputText }, { withCredentials: true });
     for(let i=0;i<questions.data.length;i++){
       cards.push({
         id:i,
@@ -32,7 +33,7 @@ function Generate() {
     };
     setLoading(false);
     setQA_pair(cards);
-    const answers=await axios.get(`${FAST_API_URL}/generate-answers`, { withCredentials: true });
+    const answers=await axios.get(`${API_BASE_URL}/flashcards/generate-answers`, { withCredentials: true });
     for(let i=0;i<cards.length;i++){
       cards[i].backHTML=answers.data[i];
       console.log(answers.data[i]);
