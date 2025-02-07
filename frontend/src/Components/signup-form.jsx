@@ -9,12 +9,13 @@ import {Link,useNavigate} from 'react-router-dom'
 import { useMutation ,useQueryClient} from "@tanstack/react-query"
 import { toast, Toaster } from "react-hot-toast"
 import { useUser } from "@/context/userContext"
-const queryClient=useQueryClient();
+
 const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 export function SignupForm({
   className,
   ...props
 }) {
+    const queryClient=useQueryClient();
     const {userData, setUserData} = useUser();
     const [formData, setFormData] = useState({
         firstName: "",
@@ -49,7 +50,7 @@ export function SignupForm({
       },
       onSuccess:()=>{
         toast.success("Account created successfully");
-        queryClient.invalidateQueries(["authUser"]);
+        queryClient.invalidateQueries({ queryKey: ["authUser"] });
         navigate('/onboarding',{ state: { name: formData.firstName } });
       },
       onError:(error)=>{

@@ -9,11 +9,12 @@ import {Link,useNavigate} from 'react-router-dom'
 import toast from "react-hot-toast"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
-const queryClient=useQueryClient();
+
 export function LoginForm({
   className,
   ...props
 }) {
+  const queryClient=useQueryClient();
   const navigate=useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -45,7 +46,7 @@ export function LoginForm({
       },
     onSuccess:()=>{
       toast.success("Login successful");
-      queryClient.invalidateQueries(["authUser"]);
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
       navigate('/app/recommendations');
     },
     onError:(error)=>{
