@@ -24,15 +24,10 @@ app.use('/api/resume',resumeRoutes);
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
-  origin: 'https://career-hub-eta.vercel.app/', // Replace with your frontend's domain
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
+    origin: '*', // Allow all origins
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
 }));
 
-// Your routes here
-
-app.listen(8000, () => {
-  console.log('Server is running on port 8000');
-});
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
