@@ -56,8 +56,12 @@ export async function checkResume(req,res){
     //     ],
     //     "Personalized Advice": "Your strong programming skills and experience in developing projects using various technologies make you a strong candidate for this role. To increase your chances of getting selected, it would be beneficial to highlight any experience or knowledge you have in the field of computer vision and photogrammetry. Additionally, gaining more exposure to Structure from Motion (SFM) pipeline would make your profile even more attractive for this role."
     //   }
-    const response=await axios.post(`${FAST_API_URL}/api/resume-check`,{text:jd});
-
-    res.status(200).json({message:'Resume checked successfully',data:response.data});
+    try{
+        const response=await axios.post(`${FAST_API_URL}/api/resume-check`,{text:jd});
+        res.status(200).json({message:'Resume checked successfully',data:response.data});
+    }catch(error){
+        console.error('Check Error:', error);
+        res.status(500).json({ error: 'Check failed' });
+    }
 
 }
