@@ -1,9 +1,9 @@
-import { Button } from "../../components/ui/button";
-import BoxReveal from "../../components/ui/box-reveal";
+import { Button } from "@/components/ui/button";
+import BoxReveal from "@/components/ui/box-reveal";
 import { memo } from "react";
-import { InteractiveHoverButton } from '../../components/ui/interactive-hover-button';
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button';
 import { Link} from "react-router-dom";
-import RetroGrid from "../../components/ui/retro-grid";
+import RetroGrid from "@/components/ui/retro-grid";
 import React from "react";
 
 const CallToAction = React.memo(function CallToAction() {

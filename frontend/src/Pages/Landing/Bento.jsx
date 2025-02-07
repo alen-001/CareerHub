@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { RocketIcon, } from "@radix-ui/react-icons";
 import { BotMessageSquare,ScanText, SquareUserRound,LibraryBig} from 'lucide-react';
-import { BentoCard, BentoGrid } from "../../components/ui/bento-grid";
+import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
   
 const features = [
   {
