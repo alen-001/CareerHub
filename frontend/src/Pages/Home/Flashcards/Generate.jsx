@@ -1,4 +1,4 @@
-import  Flashcardarray  from "@/components/ui/FlashcardArray.jsx";
+import  FlashcardArray  from "../../components/ui/FlashcardArray.jsx";
 import toast from "react-hot-toast";
 import React, { useState } from "react";
 import { TextShimmer } from "@/components/ui/text-shimmer";
@@ -48,13 +48,13 @@ function Generate() {
         {visible?
             <>
             {loading?
-            <Flashcardarray cards={LoadingCard} 
+            <FlashcardArray cards={LoadingCard} 
               frontContentStyle={{display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.5rem"}}
               frontCardStyle={{backgroundColor:"#000",borderWidth:"1px",borderColor:"#27272a" }}  
               backContentStyle={{display:"flex",alignItems:"center",justifyContent:"center" ,fontSize:"1.5rem"}}
               backCardStyle={{backgroundColor:"#000",borderWidth:"1px",borderColor:"#27272a"}} 
               />:
-            <Flashcardarray cards={qa_pair} 
+            <FlashcardArray cards={qa_pair} 
               frontContentStyle={{display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.5rem",padding:"1rem",textAlign:"center",color:"#fff"}}
               frontCardStyle={{backgroundColor:"#000",borderWidth:"1px",borderColor:"#27272a"}} 
               backContentStyle={{display:"flex",alignItems:"center",justifyContent:"center" ,fontSize:"1rem",padding:"1rem",paddingTop:"2rem",textAlign:"center",color:"#fff"}}
