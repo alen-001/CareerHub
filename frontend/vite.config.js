@@ -16,7 +16,7 @@ export default defineConfig({
   server:{
     proxy:{
       "/api":{
-        target:"http://localhost:3000",
+        target:"https://careerhub-z4m6.onrender.com",
         changeOrigin:true,
       }
     }
