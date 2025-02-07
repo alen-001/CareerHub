@@ -29,13 +29,13 @@ function App() {
     }
   }
   })
-  // if(isLoading){
-  //   return(
-  //     <div className='h-screen w-screen flex justify-center items-center'>
-  //       Loading...
-  //     </div>
-  //   )
-  // }
+  if(isLoading){
+    return(
+      <div className='h-screen w-screen flex justify-center items-center'>
+        Loading...
+      </div>
+    )
+  }
   return (
     <UserProvider>
     <Routes>
