@@ -1,5 +1,7 @@
 import axios from "axios";
-const FAST_API_URL = 'http://localhost:8000';
+import dotenv from 'dotenv';
+dotenv.config();
+const FAST_API_URL = process.env.FAST_API_URL;
 function selectSkill(skills){
     if(skills.length>0)return skills[Math.floor(Math.random()*skills.length)];
     else return null;

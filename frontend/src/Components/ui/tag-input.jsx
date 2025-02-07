@@ -20,7 +20,7 @@ export function TagInput({
   tags,
   setTags,
   suggestions = [],
-  maxTags = 25,
+  maxTags = 50,
   label,
   placeholder = "Add tags...",
   error,

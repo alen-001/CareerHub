@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import Chat from '../models/chatbotModel.js';
 import axios from 'axios';
-
-const FAST_API_URL = 'http://localhost:8000';
+import dotenv from 'dotenv';
+dotenv.config();
+const FAST_API_URL = process.env.FAST_API_URL;
 
 export async function startChat(req, res) {
     try {
@@ -31,35 +32,6 @@ export async function startChat(req, res) {
                 requestData[field] = user[field];
             }
         });
-
-        // Convert nested ObjectIds and ensure proper types
-        // if (user.workExperience) {
-        //     requestData.workExperience = user.workExperience.map(exp => ({
-        //         ...exp,
-        //         _id: exp._id.toString(), // Convert _id to string
-        //         startYear: exp.startYear ? parseInt(exp.startYear) : null,
-        //         endYear: exp.endYear ? parseInt(exp.endYear) : null
-        //     }));
-        // }
-
-        // if (user.educationDetails) {
-        //     requestData.educationDetails = user.educationDetails.map(ed => ({
-        //         ...ed,
-        //         _id: ed._id.toString(),
-        //         startYear: ed.startYear ? parseInt(ed.startYear) : null,
-        //         endYear: ed.endYear ? parseInt(ed.endYear) : null
-        //     }));
-        // }
-
-        // if (user.projects) {
-        //     requestData.projects = user.projects.map(proj => ({
-        //         ...proj,
-        //         _id: proj._id.toString(),
-        //         technologiesUsed: Array.isArray(proj.technologiesUsed[0]) ? proj.technologiesUsed[0] : proj.technologiesUsed
-        //     }));
-        // }
-
-        // Ensure socialLinks is an object (or convert to a JSON string if needed)
         if (user.socialLinks && typeof user.socialLinks !== 'string') {
             requestData.socialLinks = JSON.stringify(user.socialLinks);
         }
@@ -120,6 +92,23 @@ export async function getSessions(req, res) {
     try {
         const sessions = await Chat.find({ userId });
         res.status(200).send(sessions);
+    } catch (err) {
+        console.log("Error in chat controller", err.message);
+        res.status(500).send({ message: 'Internal Server Error' });
+    }
+}
+export async function deleteSession(req,res) {
+    const sessionId = req.body.sessionId;
+    if (!sessionId) {
+        return res.status(404).send({ message: 'Session Id is required'});
+    }
+
+    try {
+        const session = await Chat.findOneAndDelete({ sessionId });
+        if (!session) {
+            return res.status(404).send({ message: 'Chat session not found' });
+        }
+        res.status(200).send({ message: 'Chat session deleted successfully' });
     } catch (err) {
         console.log("Error in chat controller", err.message);
         res.status(500).send({ message: 'Internal Server Error' });

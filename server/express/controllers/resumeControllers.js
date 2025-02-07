@@ -3,7 +3,9 @@
 //   filename: "name"
 //   pdf_file: "file in bytes"
 import axios from 'axios';
-const FAST_API_URL = 'http://localhost:8000';
+import dotenv from 'dotenv';
+dotenv.config();
+const FAST_API_URL = process.env.FAST_API_URL;
 import FormData from 'form-data';
 export async function fileUpload  (req, res){
     try {

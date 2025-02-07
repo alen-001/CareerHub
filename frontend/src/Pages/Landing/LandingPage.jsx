@@ -1,5 +1,5 @@
 import React from 'react';
-import Nav from '../../components/LandingNav';
+import Nav from '@/components/LandingNav';
 import Hero from './Hero';
 import Bento from './Bento';
 import CallToAction from './CallToAction';

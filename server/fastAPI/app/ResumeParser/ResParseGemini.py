@@ -97,10 +97,14 @@ class ResumeParser:
             response = self.model.generate_content([{'mime_type':'image/jpeg', 'data': imgs[0]}, self.prompt_template])
         
         try:
-            return json.loads(response.text.split('json\n')[-1].split('\n```\n')[0])
-        except:
-            return response.text
-
+            ans = json.loads(response.text.split('json\n')[-1].split('\n```')[0])
+            return ans
+        except json.JSONDecodeError:
+            try:
+                ans2 = json.loads(response.text.split('```json \n')[-1].split('\n```')[0])
+                return ans2
+            except json.JSONDecodeError:
+                return response.text
     
 # parser = ResumeParser()
 # print(parser.information_parsing('GuptaTheUrishita.pdf'))
