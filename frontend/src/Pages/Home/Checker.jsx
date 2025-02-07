@@ -17,8 +17,9 @@ function Checker() {
             formData.append('pdf_file', selectedFile);
 
             const response1 = await axios.post(`${API_BASE_URL}/resume/upload`, formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            }, { withCredentials: true });
+                headers: { 'Content-Type': 'multipart/form-data' },
+                withCredentials: true
+            });
             const response2 = await axios.post(`${API_BASE_URL}/resume/check`,{jd},{ withCredentials: true });
             // if(!response2.ok){
             //     throw new Error(response2.data.error || "Failed to parse file");
