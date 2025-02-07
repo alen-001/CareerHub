@@ -20,8 +20,9 @@ function Upload() {
             formData.append('pdf_file', selectedFile);
 
             const response1 = await axios.post(`${API_BASE_URL}/resume/upload`, formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            }, { withCredentials: true });
+                headers: { 'Content-Type': 'multipart/form-data' },
+                withCredentials: true 
+            });
             // if(!response1.ok){
             //     throw new Error(response1.data.error || "Failed to upload file");
             // }
