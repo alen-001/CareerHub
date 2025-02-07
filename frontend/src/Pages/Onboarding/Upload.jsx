@@ -21,11 +21,11 @@ function Upload() {
 
             const response1 = await axios.post(`${API_BASE_URL}/resume/upload`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
-            });
+            }, { withCredentials: true });
             // if(!response1.ok){
             //     throw new Error(response1.data.error || "Failed to upload file");
             // }
-            const response2 = await axios.get(`${API_BASE_URL}/resume/parse`);
+            const response2 = await axios.get(`${API_BASE_URL}/resume/parse`, { withCredentials: true });
             // if(!response2.ok){
             //     throw new Error(response2.data.error || "Failed to parse file");
             // }

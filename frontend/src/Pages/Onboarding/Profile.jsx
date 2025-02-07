@@ -130,7 +130,7 @@ export default function ProfileBuilder() {
   const { data: da, isLoading, error :er} = useQuery({
     queryKey: ["profile"],
     queryFn: async () => {
-      const response = await axios.get(`${API_BASE_URL}/auth/me`); // Replace with your API endpoint
+      const response = await axios.get(`${API_BASE_URL}/auth/me`,{ withCredentials: true }); // Replace with your API endpoint
       return response.data;
     }
   });
@@ -188,7 +188,7 @@ export default function ProfileBuilder() {
             headers:{
                 'Content-Type':'application/json'
             }
-        });
+        }, { withCredentials: true });
       },
       onSuccess:()=>{
         toast.success("Profile built successfully");

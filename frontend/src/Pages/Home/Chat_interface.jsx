@@ -40,7 +40,7 @@ export default function ChatInterface({ sessionId, sessions, setSessions }) {
     mutationFn: async ({ sessionId, message }) => {
       console.log(sessionId, message);
       setLoading(true);
-      const res = await axios.post(`${API_BASE_URL}/chatbot/chat`, { sessionId:sessionId, message });
+      const res = await axios.post(`${API_BASE_URL}/chatbot/chat`, { sessionId:sessionId, message }, { withCredentials: true });
       return res.data;
     },
     onSuccess: (data) => {

@@ -21,11 +21,11 @@ function App() {
     queryKey:['authUser'],
     queryFn:async()=>{
       try{
-        const {data}=await axios.get(`${API_BASE_URL}/auth/me`);
+        const {data}=await axios.get(`${API_BASE_URL}/auth/me`, { withCredentials: true });
         console.log(data);
         return data;
       }catch(err){
-        console.log(err);
+        console.error(err);
     }
   }
   })

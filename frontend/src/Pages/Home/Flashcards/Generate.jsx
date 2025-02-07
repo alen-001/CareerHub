@@ -21,7 +21,7 @@ function Generate() {
   async function GenerateFlash(){
     setLoading(true);
     setVisible(true);
-    const questions=await axios.post(`${FAST_API_URL}/generate-questions`, { text: inputText });
+    const questions=await axios.post(`${FAST_API_URL}/generate-questions`, { text: inputText }, { withCredentials: true });
     for(let i=0;i<questions.data.length;i++){
       cards.push({
         id:i,
@@ -32,7 +32,7 @@ function Generate() {
     };
     setLoading(false);
     setQA_pair(cards);
-    const answers=await axios.get(`${FAST_API_URL}/generate-answers`);
+    const answers=await axios.get(`${FAST_API_URL}/generate-answers`, { withCredentials: true });
     for(let i=0;i<cards.length;i++){
       cards[i].backHTML=answers.data[i];
       console.log(answers.data[i]);

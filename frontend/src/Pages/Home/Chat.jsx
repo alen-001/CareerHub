@@ -20,7 +20,7 @@ function Chat() {
     enabled: true,
     queryFn: 
     async () => {
-      const response = await fetch(`${API_BASE_URL}/chatbot/sessions`);
+      const response = await fetch(`${API_BASE_URL}/chatbot/sessions`,{credentials:'include'});
       const data = await response.json();
       if(!response.ok){
         throw new Error(data.error || 'Failed to fetch sessions');
@@ -54,7 +54,7 @@ function Chat() {
   
   const { mutate, isError, error: startChatError, isPending } = useMutation({
     mutationFn: async () => {
-      const response = await fetch(`${API_BASE_URL}/chatbot/start-chat`);
+      const response = await fetch(`${API_BASE_URL}/chatbot/start-chat`,{credentials:'include'});
       const data = await response.json();
       return data;
     },

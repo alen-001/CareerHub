@@ -21,7 +21,7 @@ function Recommend() {
     }
     const fetchRecommendations = async () => {
       setExplicitLoading(true);
-      const response = await axios.post(`${API_BASE_URL}/recommendations/explicit`, { text:skills });
+      const response = await axios.post(`${API_BASE_URL}/recommendations/explicit`, { text:skills }, { withCredentials: true });
       return response.data;
     };
 
@@ -45,7 +45,7 @@ function Recommend() {
   const {data,isPending,error}=useQuery({
     queryKey: ['recommendations'],
     queryFn: async () => {
-      const response=await fetch(`${API_BASE_URL}/recommendations`);
+      const response=await fetch(`${API_BASE_URL}/recommendations`,{credentials:'include'});
       const data=await response.json();
       if(!response.ok){
         throw new Error(data.error || 'Failed to fetch recommendations');

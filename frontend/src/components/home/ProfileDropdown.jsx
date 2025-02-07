@@ -11,7 +11,7 @@ const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 function ProfileDropdown() {
     const navigate = useNavigate();
     const handleLogout = () => {
-        axios.post(`${API_BASE_URL}/auth/logout`)
+        axios.post(`${API_BASE_URL}/auth/logout`, { withCredentials: true })
         .then((res) => {
             console.log(res);
             toast.success('Logged out successfully');
