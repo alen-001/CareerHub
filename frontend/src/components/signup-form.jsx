@@ -37,6 +37,7 @@ export function SignupForm({
             headers:{
               'Content-Type':'application/json'
             },
+            credentials: 'include',
             body:JSON.stringify({firstName,lastName,email,username,password})}
           )
           setUserData({firstName,lastName,email,username});

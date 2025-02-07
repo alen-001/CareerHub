@@ -33,6 +33,7 @@ export function LoginForm({
           headers:{
             'Content-Type':'application/json'
           },
+          credentials: 'include',
           body:JSON.stringify({email,username,password})}
         )
         console.log({email,username,password});

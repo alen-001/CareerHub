@@ -19,17 +19,18 @@ app.use(cors({
 // import dotenv from 'dotenv';
 // dotenv.config();
 // const FAST_API_URL = process.env.FAST_API_URL;
-
-
-connectDB();
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+connectDB();
+
 app.use('/api/user', userRoutes);
 app.use("/api/auth", authRoutes);
 app.use('/api/recommendations',recommendationRoutes);
 app.use('/api/chatbot',chatbotRoutes);
 app.use('/api/resume',resumeRoutes);
-app.use(express.urlencoded({ extended: true }));
+
 
 
 const PORT = process.env.PORT || 5000;
