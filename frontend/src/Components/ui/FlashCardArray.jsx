@@ -6,7 +6,7 @@ import {Flashcard} from "react-quizlet-flashcard"
 // currentCardFlipRef?: React.MutableRefObject<() => void>;
 // resetArray
 
-function FlashcardArray({
+function Flashcardarray({
   cards,
   controls = true,
   showCount = true,
@@ -203,4 +203,4 @@ function FlashcardArray({
   )
 }
 
-export default FlashcardArray
+export default Flashcardarray

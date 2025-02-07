@@ -1,4 +1,4 @@
-import  FlashcardArray  from "@/components/ui/FlashcardArray.jsx";
+import  Flashcardarray  from "@/components/ui/FlashcardArray.jsx";
 import toast from "react-hot-toast";
 import React, { useState } from "react";
 import { TextShimmer } from "@/components/ui/text-shimmer";
