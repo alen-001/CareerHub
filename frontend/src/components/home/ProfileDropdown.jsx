@@ -7,14 +7,17 @@ import React from 'react'
 import { Button } from '../ui/button'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import { useQueryClient } from '@tanstack/react-query'
 const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 function ProfileDropdown() {
+    const queryClient=useQueryClient();
     const navigate = useNavigate();
     const handleLogout = () => {
         axios.post(`${API_BASE_URL}/auth/logout`, { withCredentials: true })
         .then((res) => {
             console.log(res);
             toast.success('Logged out successfully');
+            queryClient.invalidateQueries({ queryKey: ["authUser"] });
             navigate('/login');
         })
         .catch((err) => {
