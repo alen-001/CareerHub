@@ -187,8 +187,9 @@ export default function ProfileBuilder() {
         {
             headers:{
                 'Content-Type':'application/json'
-            }
-        }, { withCredentials: true });
+            },
+            withCredentials: true 
+        });
       },
       onSuccess:()=>{
         toast.success("Profile built successfully");
