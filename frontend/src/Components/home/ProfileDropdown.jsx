@@ -32,12 +32,12 @@ function ProfileDropdown() {
             <User size={18}  strokeWidth={1}/>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-24'>
-      <Link to='/onboarding/upload'>
+      {/* <Link to='/onboarding/upload'>
       <DropdownMenuItem>
         Profile
       </DropdownMenuItem>
       </Link>
-      <DropdownMenuSeparator />
+      <DropdownMenuSeparator /> */}
         <DropdownMenuItem className='text-red-500' onClick={handleLogout} >
             Log out<LogOut size={18}  strokeWidth={1} />
         </DropdownMenuItem>

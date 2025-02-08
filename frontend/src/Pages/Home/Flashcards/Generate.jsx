@@ -20,26 +20,29 @@ function Generate() {
   const [loading,setLoading]=useState(true);
   const [visible,setVisible]=useState(false);
   async function GenerateFlash(){
-    setLoading(true);
-    setVisible(true);
-    const questions=await axios.post(`${API_BASE_URL}/flashcards/generate-questions`, { text: inputText }, { withCredentials: true });
-    for(let i=0;i<questions.data.length;i++){
-      cards.push({
-        id:i,
-        frontHTML:(questions.data[i]).substr(2),
-        backHTML:<TextShimmer>Answers are loading...</TextShimmer>
-      });
-      console.log(questions.data[i]);
-    };
-    setLoading(false);
-    setQA_pair(cards);
-    const answers=await axios.get(`${API_BASE_URL}/flashcards/generate-answers`, { withCredentials: true });
-    for(let i=0;i<cards.length;i++){
-      cards[i].backHTML=answers.data[i];
-      console.log(answers.data[i]);
+    try{
+        setLoading(true);
+        setVisible(true);
+        const questions=await axios.post(`${API_BASE_URL}/flashcards/generate-questions`, { text: inputText }, { withCredentials: true });
+        for(let i=0;i<questions.data.length;i++){
+          cards.push({
+            id:i,
+            frontHTML:(questions.data[i]).substr(2),
+            backHTML:<TextShimmer>Answers are loading...</TextShimmer>
+          });
+          console.log(questions.data[i]);
+        };
+        setLoading(false);
+        setQA_pair(cards);
+        const answers=await axios.get(`${API_BASE_URL}/flashcards/generate-answers`, { withCredentials: true });
+        for(let i=0;i<cards.length;i++){
+          cards[i].backHTML=answers.data[i];
+          console.log(answers.data[i]);
+        }
+        setQA_pair(cards);
+    }catch(err){
+      toast.error(err.message);
     }
-    setQA_pair(cards);
-
   }
   return (
     <>

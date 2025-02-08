@@ -18,12 +18,10 @@ import ProfileDropdown from './ProfileDropdown'
         className="w-full absolute top-0 left-1/2 font-lg transform -translate-x-1/2 font-thin flex justify-between items-center h-12 text-white shadow-sm p-10  border-b border-zinc-800"
         role="navigation"
       >
-        <Link to='/app'>
           <div className="flex items-center">
             <img src={logo} className='h-9 w-9' alt="Logo" />
             <div className="font-thin text-lg">CareerShepherds</div>
           </div>
-        </Link>
 
         <div className="md:hidden" onClick={toggleMenu}>
           {isOpen ? <X size={24} /> : <Menu size={24} />}

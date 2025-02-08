@@ -57,7 +57,7 @@ function App() {
       <Route path='checker' element={<Checker/>}/>
       <Route path='flashcards' element={<Generate/>}/>
       <Route path='recommendations' element={<Recommend/>}/>
-      <Route path='*' element={<div className='text-4xl text-white flex justify-center items-center h-screen w-screen font-semibold font-mono'>404 | Page not found</div>}/>
+      <Route path='*' element={<div className='text-4xl text-white flex justify-center items-center h-screen w-screen font-semibold font-mono'>404 | Was being lost in your career not enough? <br />(I'm jk, sorry 😭) </div>}/>
     </Route>
     <Route path='*' element={<div className='text-4xl text-white flex justify-center items-center h-screen w-screen font-semibold font-mono'>404 | Page not found</div>}/>
   </Routes>

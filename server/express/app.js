@@ -12,7 +12,8 @@ import cors from 'cors';
 const app = express();
 dotenv.config();
 app.use(cors({
-    origin: 'https://career-hub-eta.vercel.app', // Allow all origins
+    origin: 'https://career-hub-eta.vercel.app',  //prod url
+    // origin: 'http://localhost:5173', //dev url
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }));
