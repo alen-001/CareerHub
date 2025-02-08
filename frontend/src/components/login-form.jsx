@@ -64,6 +64,12 @@ export function LoginForm({
       [name]: value,
     }));
   };
+  function handleGuestSignin(){
+    setFormData({
+      email: "Aarav26",
+      password: "aarav26"});
+  }
+
   return (
     <div className={cn("flex flex-col gap-8", className)} {...props}>
       <Card className="overflow-hidden bg-[#000000cc]">
@@ -112,11 +118,10 @@ export function LoginForm({
           </div>
         </CardContent>
       </Card>
-      {/* <div
-        className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </div> */}
+      <div
+        className="text-balance text-center text-xs text-zinc-200 [&_span]:underline [&_span]:underline-offset-4 hover:[&_span]:text-primary">
+        Need a quick demo?, Click to <span className="cursor-pointer" onClick={handleGuestSignin}>Sign-in with dummy data</span>.
+      </div>
     </div>
   );
 }
