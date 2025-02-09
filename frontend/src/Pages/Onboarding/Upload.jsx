@@ -8,7 +8,6 @@ import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { useUser } from '@/context/userContext'
-import { v4 } from 'uuid'
 const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 function Upload() {
     const navigate = useNavigate();
@@ -17,15 +16,15 @@ function Upload() {
     const {mutate,isError,error,isPending} = useMutation({
         mutationFn:async (selectedFile) => {
             const formData = new FormData();
-            const uniqueFileId = v4();
-            formData.append('filename', `resume-${uniqueFileId}`);
+            formData.append('filename', `resume`);
             formData.append('pdf_file', selectedFile);
-            console.log(`resume-${uniqueFileId}`);
             const response1 = await axios.post(`${API_BASE_URL}/resume/upload`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
                 withCredentials: true 
             });
-            const response2 = await axios.get(`${API_BASE_URL}/resume/parse`, { withCredentials: true });
+            const filename=response1.data.filename;
+            console.log('filename:',filename);
+            const response2 = await axios.post(`${API_BASE_URL}/resume/parse`,{filename}, { withCredentials: true });
             const data=await response2.data;
             return {res1:response1.data, res2:response2.data};
         },

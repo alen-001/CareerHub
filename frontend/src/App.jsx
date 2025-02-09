@@ -30,16 +30,6 @@ function App() {
     }
   }
   })
-  // return(
-  //   <LoadingScreen/>
-  // )
-  // if(isLoading){
-  //   return(
-  //     <div className='h-screen w-screen flex justify-center items-center'>
-  //       Loading...
-  //     </div>
-  //   )
-  // }
   return (
     <UserProvider>
     <Routes>

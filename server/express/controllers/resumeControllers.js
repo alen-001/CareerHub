@@ -33,7 +33,8 @@ export async function parseResume(req,res){
     //send the parsed data back to the client
     // const response=await axios.get(`${FASTAPI_URL}/api/parse`);
     try{
-        const response=await axios.get(`${FAST_API_URL}/api/resume-parse`);
+        const file_name=req.body.filename;
+        const response=await axios.post(`${FAST_API_URL}/api/resume-parser`,{filename:file_name});
         res.json(response.data);
     }
         catch(error){

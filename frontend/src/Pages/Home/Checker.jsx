@@ -5,7 +5,6 @@ import axios from 'axios';
 import { Card, CardContent, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { v4 } from 'uuid'
 const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 function Checker() {
     const [file, setFile] = useState(null);
@@ -14,15 +13,15 @@ function Checker() {
     const {mutate,isError,error,isPending} = useMutation({
         mutationFn:async ({selectedFile,jd}) => {
             const formData = new FormData();
-            const uniqueFileId = v4();
-            formData.append('filename', `resume-${uniqueFileId}`);
-            formData.append('pdf_file', selectedFile);
-            console.log(`resume-${uniqueFileId}`);
+            formData.append('filename', `resume`);
+            formData.append('pdf_file', selectedFile);    
             const response1 = await axios.post(`${API_BASE_URL}/resume/upload`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
                 withCredentials: true
             });
-            const response2 = await axios.post(`${API_BASE_URL}/resume/check`,{jd},{ withCredentials: true });
+            const filename=response1.data.filename;
+            console.log('filename:',filename);
+            const response2 = await axios.post(`${API_BASE_URL}/resume/check`,{jd,filename:filename},{ withCredentials: true });
             // if(!response2.ok){
             //     throw new Error(response2.data.error || "Failed to parse file");
             // }
