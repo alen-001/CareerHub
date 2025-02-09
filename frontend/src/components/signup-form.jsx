@@ -9,7 +9,7 @@ import {Link,useNavigate} from 'react-router-dom'
 import { useMutation ,useQueryClient} from "@tanstack/react-query"
 import { toast, Toaster } from "react-hot-toast"
 import { useUser } from "@/context/userContext"
-
+import LoadingScreen from "./LoadingScreen.jsx"
 const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 export function SignupForm({
   className,
@@ -62,6 +62,11 @@ export function SignupForm({
         mutate(formData);
         
       };
+  if(isPending){
+    return(
+      <LoadingScreen/>
+    )
+  }
   return (
     <div className={cn("flex flex-col gap-8", className)} {...props}>
       <Card className="overflow-hidden bg-[#000000cc]">
