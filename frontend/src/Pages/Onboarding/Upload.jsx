@@ -22,7 +22,7 @@ function Upload() {
                 headers: { 'Content-Type': 'multipart/form-data' },
                 withCredentials: true 
             });
-            const filename=response1.data.filename;
+            const filename=response1.data.file_path;
             console.log('filename:',filename);
             const response2 = await axios.post(`${API_BASE_URL}/resume/parse`,{filename}, { withCredentials: true });
             const data=await response2.data;
