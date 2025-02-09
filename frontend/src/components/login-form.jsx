@@ -8,6 +8,7 @@ import React,{useState} from "react"
 import {Link,useNavigate} from 'react-router-dom'
 import toast from "react-hot-toast"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import LoadingScreen from "./LoadingScreen.jsx"
 const API_BASE_URL=import.meta.env.VITE_API_BASE_URL;
 
 export function LoginForm({
@@ -69,7 +70,11 @@ export function LoginForm({
       email: "Aarav26",
       password: "aarav26"});
   }
-
+  if(isPending){
+    return(
+      <LoadingScreen/>
+    )
+  }
   return (
     <div className={cn("flex flex-col gap-8", className)} {...props}>
       <Card className="overflow-hidden bg-[#000000cc]">
